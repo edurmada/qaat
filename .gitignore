@@ -1,0 +1,31 @@
+Node.js dependencies
+
+node_modules/
+
+Playwright test results and reports
+
+playwright-report/
+
+Temporary files
+
+*.log
+*.tmp
+*.temp
+
+IDE/editor files
+
+.vscode/
+.idea/
+.DS_Store
+
+Environment variables
+
+.env
+
+Coverage reports
+
+coverage/
+
+npm package lock (optional, if you want to ignore)
+
+package-lock.json

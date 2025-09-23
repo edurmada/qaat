@@ -43,13 +43,17 @@ jobs:
       - name: Prepare Cucumber report for upload
         if: always()
         run: |
-          if [ -f "cucumber-report" ]; then
-            echo "Cucumber report file exists"
-          elif [ -d "cucumber-report" ]; then
-            echo "Cucumber report directory exists"
+          # Create cucumber-report directory for GitHub Pages
+          rm -f cucumber-report  # Remove file if it exists
+          mkdir -p cucumber-report
+          
+          if [ -f "cucumber-report.html" ]; then
+            echo "Moving cucumber-report.html to directory"
+            mv cucumber-report.html cucumber-report/index.html
+          elif [ -d "cucumber-report" ] && [ -f "cucumber-report/index.html" ]; then
+            echo "Cucumber report directory with index.html already exists"
           else
-            echo "Creating empty Cucumber report directory"
-            mkdir -p cucumber-report
+            echo "Creating empty Cucumber report"
             echo "<html><body><h1>No test results available</h1><p>Tests may have failed or no report was generated.</p></body></html>" > cucumber-report/index.html
           fi
 

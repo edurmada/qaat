@@ -1,4 +1,4 @@
-import { test, expect } from '../fixtures/home.fixture';
+import { test, expect } from '../fixtures/home.fixture.js';
 
 test.describe('Google Landing Page', () => {
   test('Verify homepage elements are visible', async ({ homePage }) => {
@@ -21,3 +21,5 @@ test.describe('Google Landing Page', () => {
     expect(result.url).toContain('playwright.dev');
   });
 });
+
+

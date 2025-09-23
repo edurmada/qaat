@@ -1,11 +1,7 @@
-import { Page } from '@playwright/test';
-import { LoginLocators } from '../locators/login.locators';
+import { LoginLocators } from '../locators/login.locators.js';
 
 export class LoginPage {
-  readonly page: Page;
-  readonly locators: LoginLocators;
-
-  constructor(page: Page) {
+  constructor(page) {
     this.page = page;
     this.locators = new LoginLocators(page);
   }
@@ -14,12 +10,12 @@ export class LoginPage {
     await this.page.goto('https://accounts.google.com/');
   }
 
-  async enterEmail(email: string) {
+  async enterEmail(email) {
     await this.locators.emailInput.fill(email);
     await this.locators.nextButton.click();
   }
 
-  async enterPassword(password: string) {
+  async enterPassword(password) {
     await this.locators.passwordInput.waitFor({ state: 'visible' });
     await this.locators.passwordInput.fill(password);
     await this.locators.nextButton.click();
@@ -41,14 +37,16 @@ export class LoginPage {
     await this.locators.createAccountButton.click();
   }
 
-  async isAccountNotFoundErrorVisible(): Promise<boolean> {
+  async isAccountNotFoundErrorVisible() {
     return await this.locators.accountNotFoundError.isVisible();
   }
 
-  async getAccountNotFoundErrorText(): Promise<string | null> {
+  async getAccountNotFoundErrorText() {
     if (await this.isAccountNotFoundErrorVisible()) {
       return await this.locators.accountNotFoundError.textContent();
     }
     return null;
   }
 }
+
+

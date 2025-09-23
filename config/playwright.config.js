@@ -1,6 +1,7 @@
 import { defineConfig, devices } from '@playwright/test';
 
 export default defineConfig({
+  testDir: '../tests',
   use: {
     headless: false,
     baseURL: 'https://www.google.com',
@@ -35,3 +36,5 @@ export default defineConfig({
 });
 
 // To run tests for a specific project/device, use: npx playwright test --project=<project-name>
+
+

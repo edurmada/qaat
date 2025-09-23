@@ -1,17 +1,5 @@
-import { Page, Locator } from '@playwright/test';
-
 export class LoginLocators {
-  readonly page: Page;
-  readonly emailInput: Locator;
-  readonly forgotEmailButton: Locator;
-  readonly createAccountButton: Locator;
-  readonly nextButton: Locator;
-  readonly passwordInput: Locator;
-  readonly showPasswordCheckbox: Locator;
-  readonly forgotPasswordButton: Locator;
-  readonly accountNotFoundError: Locator;
-
-  constructor(page: Page) {
+  constructor(page) {
     this.page = page;
 
     this.emailInput = page.locator('input[name="identifier"]');
@@ -27,3 +15,5 @@ export class LoginLocators {
     this.accountNotFoundError = page.getByText("Couldn't find your Google Account");
   }
 }
+
+

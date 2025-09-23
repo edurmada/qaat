@@ -1,17 +1,5 @@
-import { Page, Locator } from '@playwright/test';
-
 export class GoogleLocators {
-  readonly page: Page;
-  readonly searchBox: Locator;
-  readonly searchButton: Locator;
-  readonly luckyButton: Locator;
-  readonly gmailLink: Locator;
-  readonly googleAppsButton: Locator;
-  readonly signInLink: Locator;
-  readonly firstResultLink: Locator;
-  readonly firstResultTitle: Locator;
-
-  constructor(page: Page) {
+  constructor(page) {
     this.page = page;
 
     // Home
@@ -29,3 +17,5 @@ export class GoogleLocators {
     this.firstResultTitle = page.locator('div.tF2Cxc h3').first();
   }
 }
+
+

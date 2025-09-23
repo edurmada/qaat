@@ -1,11 +1,7 @@
-import { Page } from '@playwright/test';
-import { GoogleLocators } from '../locators/googleHome.locators';
+import { GoogleLocators } from '../locators/googleHome.locators.js';
 
 export class GoogleHomePage {
-  readonly page: Page;
-  readonly locators: GoogleLocators;
-
-  constructor(page: Page) {
+  constructor(page) {
     this.page = page;
     this.locators = new GoogleLocators(page);
   }
@@ -14,7 +10,7 @@ export class GoogleHomePage {
     await this.page.goto('https://www.google.com');
   }
 
-  async search(term: string) {
+  async search(term) {
     await this.locators.searchBox.fill(term);
     await this.locators.searchBox.press('Enter');
   }
@@ -29,3 +25,5 @@ export class GoogleHomePage {
     return { title, url };
   }
 }
+
+

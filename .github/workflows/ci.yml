@@ -40,6 +40,17 @@ jobs:
       - name: Run tests
         run: npm test
 
+      - name: Prepare Cucumber report for upload
+        if: always()
+        run: |
+          if [ -d "cucumber-report" ]; then
+            echo "Cucumber report directory exists"
+          else
+            echo "Creating empty Cucumber report directory"
+            mkdir -p cucumber-report
+            echo "<html><body><h1>No test results available</h1><p>Tests may have failed or no report was generated.</p></body></html>" > cucumber-report/index.html
+          fi
+
       - name: Upload Cucumber report to Pages
         if: always()
         uses: actions/upload-pages-artifact@v3

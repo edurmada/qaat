@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "cucumber-js",
-    "test:headed": "HEADLESS=false cucumber-js"
+    "test": "cucumber-js --config cucumber.config.js",
+    "test:headed": "HEADLESS=false cucumber-js --config cucumber.config.js"
   },
   "repository": {
     "type": "git",

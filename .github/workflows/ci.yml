@@ -7,13 +7,8 @@ on:
     branches: [ "**" ]
 
 permissions:
-  contents: read
-  pages: write
+  contents: write
   id-token: write
-
-concurrency:
-  group: 'pages'
-  cancel-in-progress: false
 
 jobs:
   tests:
@@ -48,11 +43,25 @@ jobs:
           # Ensure index exists to avoid empty publish
           test -f playwright-report/index.html
 
-      - name: Upload HTML report as Pages artifact
+      - name: Create versioned site directory
         if: always()
-        uses: actions/upload-pages-artifact@v3
+        run: |
+          mkdir -p site/${{ github.sha }}
+          cp -R playwright-report/* site/${{ github.sha }}/
+          # Append link to index (keeps previous content if present)
+          if [ -f site/index.html ]; then
+            echo "<li><a href='${{ github.sha }}/index.html'>Run ${{ github.sha }}</a></li>" >> site/index.html
+          else
+            echo "<html><body><h1>Reports</h1><ul><li><a href='${{ github.sha }}/index.html'>Run ${{ github.sha }}</a></li></ul></body></html>" > site/index.html
+          fi
+
+      - name: Upload site artifact
+        if: always()
+        uses: actions/upload-artifact@v4
         with:
-          path: playwright-report
+          name: site
+          path: site
+          if-no-files-found: error
 
       - name: Upload test-results (screenshots/videos)
         if: always()
@@ -65,12 +74,18 @@ jobs:
   deploy:
     needs: tests
     runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
     steps:
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
+      - name: Download site artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: site
+          path: site
+      - name: Publish to gh-pages (keep history)
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: site
+          keep_files: true
+          publish_branch: gh-pages
 
 

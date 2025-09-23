@@ -1,10 +1,8 @@
 name: CI
 
 on:
-  push:
-    branches: [ "**" ]
   pull_request:
-    branches: [ "**" ]
+    branches: [ "develop", "main" ]
 
 permissions:
   contents: read
@@ -16,22 +14,20 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  tests:
+  test:
     runs-on: ubuntu-latest
     container: mcr.microsoft.com/playwright:v1.55.1-jammy
 
     steps:
-      - name: Checkout repository
+      - name: Checkout
         uses: actions/checkout@v4
 
       - name: Install dependencies
         run: npm ci
 
-      # Browsers and system deps are preinstalled in the container image
-
-      - name: Set up environment
+      - name: Set environment
         env:
-          ENV: ${{ vars.ENV || 'prod' }}
+          ENV: ${{ vars.ENV || 'dev' }}
           BASIC_AUTH_USERNAME: ${{ secrets.BASIC_AUTH_USERNAME }}
           BASIC_AUTH_PASSWORD: ${{ secrets.BASIC_AUTH_PASSWORD }}
         run: |
@@ -42,28 +38,39 @@ jobs:
       - name: Run tests
         run: npm test
 
-      - name: Prepare HTML report for GitHub Pages
+      - name: Prepare Cucumber report for upload
         if: always()
         run: |
-          # Ensure index exists to avoid empty publish
-          test -f playwright-report/index.html
+          # Create cucumber-report directory for GitHub Pages
+          rm -f cucumber-report  # Remove file if it exists
+          mkdir -p cucumber-report
+          
+          if [ -f "cucumber-report.html" ]; then
+            echo "Moving cucumber-report.html to directory"
+            mv cucumber-report.html cucumber-report/index.html
+          elif [ -d "cucumber-report" ] && [ -f "cucumber-report/index.html" ]; then
+            echo "Cucumber report directory with index.html already exists"
+          else
+            echo "Creating empty Cucumber report"
+            echo "<html><body><h1>No test results available</h1><p>Tests may have failed or no report was generated.</p></body></html>" > cucumber-report/index.html
+          fi
 
-      - name: Upload HTML report as Pages artifact
+      - name: Upload Cucumber report to Pages
         if: always()
         uses: actions/upload-pages-artifact@v3
         with:
-          path: playwright-report
+          path: cucumber-report
 
-      - name: Upload test-results (screenshots/videos)
+      - name: Upload test artifacts
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: test-results
+          name: test-artifacts
           path: test-results
           if-no-files-found: warn
 
   deploy:
-    needs: tests
+    needs: test
     runs-on: ubuntu-latest
     environment:
       name: github-pages

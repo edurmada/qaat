@@ -43,7 +43,9 @@ jobs:
       - name: Prepare Cucumber report for upload
         if: always()
         run: |
-          if [ -d "cucumber-report" ]; then
+          if [ -f "cucumber-report" ]; then
+            echo "Cucumber report file exists"
+          elif [ -d "cucumber-report" ]; then
             echo "Cucumber report directory exists"
           else
             echo "Creating empty Cucumber report directory"

@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "playwright test -c config/playwright.config.js",
+    "test:headed": "playwright test -c config/playwright.config.js --headed"
   },
   "repository": {
     "type": "git",
@@ -13,12 +14,13 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "type": "commonjs",
+  "type": "module",
   "bugs": {
     "url": "https://github.com/edurmada/qaat/issues"
   },
   "homepage": "https://github.com/edurmada/qaat#readme",
   "devDependencies": {
-    "@playwright/test": "^1.55.0"
+    "@playwright/test": "^1.55.0",
+    "dotenv": "^16.4.5"
   }
 }

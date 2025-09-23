@@ -1,3 +1,9 @@
+.env
+test-results/
+playwright-report/
+blob-report/
+trace.zip
+node_modules/
 Node.js dependencies
 
 node_modules/

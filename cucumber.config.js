@@ -7,4 +7,5 @@ export default {
       output: 'cucumber-report/index.html',
     },
   },
+  timeout: 10000, // 10 seconds global timeout
 };

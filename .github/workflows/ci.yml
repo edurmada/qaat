@@ -1,0 +1,58 @@
+name: CI
+
+on:
+  push:
+    branches: [ "**" ]
+  pull_request:
+    branches: [ "**" ]
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps
+
+      - name: Set up environment
+        env:
+          ENV: ${{ vars.ENV || 'staging' }}
+          BASIC_AUTH_USERNAME: ${{ secrets.BASIC_AUTH_USERNAME }}
+          BASIC_AUTH_PASSWORD: ${{ secrets.BASIC_AUTH_PASSWORD }}
+        run: |
+          echo "ENV=${ENV}" >> $GITHUB_ENV
+          if [ -n "${BASIC_AUTH_USERNAME}" ]; then echo "BASIC_AUTH_USERNAME=${BASIC_AUTH_USERNAME}" >> $GITHUB_ENV; fi
+          if [ -n "${BASIC_AUTH_PASSWORD}" ]; then echo "BASIC_AUTH_PASSWORD=${BASIC_AUTH_PASSWORD}" >> $GITHUB_ENV; fi
+
+      - name: Run tests
+        run: npx playwright test
+
+      - name: Upload Playwright report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: playwright-report
+          if-no-files-found: warn
+
+      - name: Upload test-results (screenshots/videos)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results
+          path: test-results
+          if-no-files-found: warn
+
+

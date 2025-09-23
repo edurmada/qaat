@@ -116,9 +116,8 @@ export class YourPage {
 Create test files in the `tests/` directory:
 
 ```typescript
-import { test, expect } from '@playwright/test';
+import { test, expect } from './tests/fixtures';
 import { HomePage } from '../pages/HomePage';
-import { testContext, TestContext } from '../playwright.config';
 
 test('your test', async ({ page, testContext }) => {
   const homePage = new HomePage(page);
@@ -233,6 +232,19 @@ Given('I am on the page', async function () {
 1. **Browser Installation**: Run `npx playwright install` if browsers are missing
 2. **Environment Variables**: Ensure ENV is set correctly
 3. **Dependencies**: Run `npm install` to install all required packages
+
+## CI with GitHub Actions
+
+This repository includes a GitHub Actions workflow that runs Playwright tests on every push and pull request.
+
+- Workflow file: `.github/workflows/ci.yml`
+- Set repository variables/secrets as needed:
+  - Repository variable `ENV` (default `staging` is used if not set)
+  - Secrets `BASIC_AUTH_USERNAME`, `BASIC_AUTH_PASSWORD` for HTTP Basic Auth (optional)
+
+Artifacts uploaded from CI:
+- `playwright-report/` (HTML report)
+- `test-results/` (screenshots/videos on failure)
 
 ### Debug Mode
 

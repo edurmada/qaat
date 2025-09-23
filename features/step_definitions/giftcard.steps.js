@@ -15,7 +15,6 @@ Given('I am on the homepage', async function() {
 When('I search for {string}', async function(searchTerm) {
   const searchBox = this.page.locator('#k');
   await searchBox.fill(searchTerm);
-  await this.page.waitForTimeout(500); // Wait 500ms before pressing Enter
   await searchBox.press('Enter');
 });
 

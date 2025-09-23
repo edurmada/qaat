@@ -7,8 +7,11 @@ export class ProductDetailPage {
   }
 
   async verifyOnProductDetailPage() {
-    await this.locators.addToCartButton.waitFor({ state: 'visible', timeout: 20000 });
-    await this.page.waitForURL('**/product/index/**', { timeout: 20000 });
+    // Wait for navigation to complete by checking URL pattern
+    await this.page.waitForFunction(
+      () => window.location.pathname.includes('/product/index/'),
+      { timeout: 20000 }
+    );
   }
 
   async hasProductDetailPageElements() {

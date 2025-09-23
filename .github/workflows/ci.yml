@@ -36,11 +36,17 @@ jobs:
           if [ -n "${BASIC_AUTH_PASSWORD}" ]; then echo "BASIC_AUTH_PASSWORD=${BASIC_AUTH_PASSWORD}" >> $GITHUB_ENV; fi
 
       - name: Run tests
-        run: npm test
+        run: npm test -- --verbose
 
-      - name: Prepare Cucumber report for upload
+      - name: Debug and prepare Cucumber report
         if: always()
         run: |
+          echo "=== Debugging report generation ==="
+          ls -la
+          echo "=== Checking for cucumber-report files ==="
+          find . -name "*cucumber*" -type f
+          find . -name "*cucumber*" -type d
+          
           # Create cucumber-report directory for GitHub Pages
           rm -f cucumber-report  # Remove file if it exists
           mkdir -p cucumber-report
@@ -52,22 +58,17 @@ jobs:
             echo "Cucumber report directory with index.html already exists"
           else
             echo "Creating empty Cucumber report"
-            echo "<html><body><h1>No test results available</h1><p>Tests may have failed or no report was generated.</p></body></html>" > cucumber-report/index.html
+            echo "<html><body><h1>No test results available</h1><p>Tests may have failed or no report was generated.</p><p>Debug info: No cucumber-report.html or cucumber-report/index.html found.</p></body></html>" > cucumber-report/index.html
           fi
+          
+          echo "=== Final cucumber-report contents ==="
+          ls -la cucumber-report/
 
       - name: Upload Cucumber report to Pages
         if: always()
         uses: actions/upload-pages-artifact@v3
         with:
           path: cucumber-report
-
-      - name: Upload test artifacts
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: test-artifacts
-          path: test-results
-          if-no-files-found: warn
 
   deploy:
     needs: test

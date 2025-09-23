@@ -8,16 +8,23 @@
     "test:headed": "playwright test --headed",
     "test:ui": "playwright test --ui",
     "test:debug": "playwright test --debug",
-    "test:report": "playwright show-report"
+    "test:report": "playwright show-report",
+    "test:gherkin": "cucumber-js --require-module ts-node/register --require step-definitions/**/*.ts features/**/*.feature"
   },
-  "keywords": ["playwright", "testing", "automation", "e2e"],
+  "keywords": [
+    "playwright",
+    "testing",
+    "automation",
+    "e2e"
+  ],
   "author": "",
   "license": "MIT",
   "devDependencies": {
+    "@cucumber/cucumber": "^10.9.0",
     "@playwright/test": "^1.47.0",
-    "@cucumber/cucumber": "^10.0.0",
     "@types/node": "^20.0.0",
-    "typescript": "^5.0.0",
-    "dotenv": "^16.4.5"
+    "dotenv": "^16.4.5",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.2"
   }
 }

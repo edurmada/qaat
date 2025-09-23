@@ -28,7 +28,7 @@ const httpCredentials = ['dev', 'stage'].includes(env)
 
 export default defineConfig({
   testDir: '../tests',
-  reporter: [['html', { open: 'never' }]],
+  reporter: [['allure-playwright', { detail: true, outputFolder: 'allure-results' }]],
   use: {
     headless: true,
     baseURL: ENV_TO_BASE_URL[env] || ENV_TO_BASE_URL.dev,

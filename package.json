@@ -21,6 +21,7 @@
   "homepage": "https://github.com/edurmada/qaat#readme",
   "devDependencies": {
     "@playwright/test": "^1.55.0",
+    "allure-playwright": "^3.0.0",
     "dotenv": "^16.4.5"
   }
 }

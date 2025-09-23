@@ -1,8 +1,7 @@
 .env
 test-results/
-playwright-report/
-blob-report/
-trace.zip
+allure-results/
+allure-report/
 node_modules/
 Node.js dependencies
 

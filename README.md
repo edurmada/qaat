@@ -64,8 +64,8 @@ tests/
 The project includes a GitHub Actions workflow (`.github/workflows/ci.yml`) that:
 - Runs tests on push/PR to any branch
 - Uses Playwright container with pre-installed browsers
-- Publishes test results to GitHub Pages
-- Uploads test artifacts (screenshots/videos)
+- Generates and publishes Allure reports to GitHub Pages
+- Uploads test artifacts (screenshots/videos/Allure results)
 
 ### Required GitHub Settings
 Set these in your repository settings:

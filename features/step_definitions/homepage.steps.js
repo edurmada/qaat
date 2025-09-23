@@ -14,8 +14,6 @@ When('the page loads', async function() {
   // Page is already loaded from the previous step
   // This step is for clarity and potential future enhancements
   console.log('The page loads');
-  console.log(process.env.BASIC_AUTH_USERNAME);
-  console.log(process.env.BASIC_AUTH_PASSWORD);
 });
 
 Then('I should see the site header', async function() {

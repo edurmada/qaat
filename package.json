@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "playwright test -c config/playwright.config.js",
-    "test:headed": "playwright test -c config/playwright.config.js --headed"
+    "test": "cucumber-js",
+    "test:headed": "HEADLESS=false cucumber-js"
   },
   "repository": {
     "type": "git",
@@ -21,6 +21,7 @@
   "homepage": "https://github.com/edurmada/qaat#readme",
   "devDependencies": {
     "@playwright/test": "^1.55.0",
+    "@cucumber/cucumber": "^10.0.0",
     "dotenv": "^16.4.5"
   }
 }

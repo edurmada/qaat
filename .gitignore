@@ -1,37 +1,22 @@
+# Dependencies
+node_modules/
+
+# Environment variables
 .env
+
+# Test results and reports
 test-results/
-playwright-report/
-blob-report/
-trace.zip
-node_modules/
-Node.js dependencies
+cucumber-report/
 
-node_modules/
-
-Playwright test results and reports
-
-playwright-report/
-
-Temporary files
-
+# Temporary files
 *.log
 *.tmp
 *.temp
 
-IDE/editor files
-
+# IDE/editor files
 .vscode/
 .idea/
 .DS_Store
 
-Environment variables
-
-.env
-
-Coverage reports
-
+# Coverage reports
 coverage/
-
-npm package lock (optional, if you want to ignore)
-
-package-lock.json

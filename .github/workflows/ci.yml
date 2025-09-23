@@ -1,0 +1,66 @@
+name: CI
+
+on:
+  push:
+    branches: [ "**" ]
+  pull_request:
+    branches: [ "**" ]
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: 'pages'
+  cancel-in-progress: false
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    container: mcr.microsoft.com/playwright:v1.55.1-jammy
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Set environment
+        env:
+          ENV: ${{ vars.ENV || 'staging' }}
+          BASIC_AUTH_USERNAME: ${{ secrets.BASIC_AUTH_USERNAME }}
+          BASIC_AUTH_PASSWORD: ${{ secrets.BASIC_AUTH_PASSWORD }}
+        run: |
+          echo "ENV=${ENV}" >> $GITHUB_ENV
+          if [ -n "${BASIC_AUTH_USERNAME}" ]; then echo "BASIC_AUTH_USERNAME=${BASIC_AUTH_USERNAME}" >> $GITHUB_ENV; fi
+          if [ -n "${BASIC_AUTH_PASSWORD}" ]; then echo "BASIC_AUTH_PASSWORD=${BASIC_AUTH_PASSWORD}" >> $GITHUB_ENV; fi
+
+      - name: Run tests
+        run: npm test
+
+      - name: Upload Cucumber report to Pages
+        if: always()
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: cucumber-report
+
+      - name: Upload test artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-artifacts
+          path: test-results
+          if-no-files-found: warn
+
+  deploy:
+    needs: test
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

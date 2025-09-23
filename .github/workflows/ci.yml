@@ -35,7 +35,7 @@ jobs:
 
       - name: Set environment
         env:
-          ENV: ${{ vars.ENV || 'staging' }}
+          ENV: ${{ vars.ENV || 'dev' }}
           BASIC_AUTH_USERNAME: ${{ secrets.BASIC_AUTH_USERNAME }}
           BASIC_AUTH_PASSWORD: ${{ secrets.BASIC_AUTH_PASSWORD }}
         run: |
@@ -48,7 +48,24 @@ jobs:
 
       - name: Generate Allure Report
         if: always()
-        run: allure generate allure-results --clean -o allure-report
+        run: |
+          echo "Checking allure-results directory:"
+          ls -la allure-results/ || echo "allure-results directory not found"
+          echo "Generating Allure report..."
+          allure generate allure-results --clean -o allure-report
+          echo "Checking generated report:"
+          ls -la allure-report/ || echo "allure-report directory not found"
+
+      - name: Prepare Allure report for upload
+        if: always()
+        run: |
+          if [ -d "allure-report" ]; then
+            echo "Allure report directory exists, proceeding with upload"
+          else
+            echo "Allure report directory not found, creating empty report"
+            mkdir -p allure-report
+            echo "<html><body><h1>No test results available</h1></body></html>" > allure-report/index.html
+          fi
 
       - name: Upload Allure report to Pages
         if: always()

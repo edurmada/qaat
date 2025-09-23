@@ -31,7 +31,7 @@ jobs:
 
       - name: Set up environment
         env:
-          ENV: ${{ vars.ENV || 'staging' }}
+          ENV: ${{ vars.ENV || 'prod' }}
           BASIC_AUTH_USERNAME: ${{ secrets.BASIC_AUTH_USERNAME }}
           BASIC_AUTH_PASSWORD: ${{ secrets.BASIC_AUTH_PASSWORD }}
         run: |

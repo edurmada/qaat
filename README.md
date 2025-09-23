@@ -6,13 +6,13 @@ A comprehensive test automation framework built with Playwright, featuring Page 
 
 ```
 ├── tests/                    # Playwright test files
-│   └── google.spec.ts       # Example test file
+│   └── homepage.spec.ts     # Example test file
 ├── pages/                   # Page Object Models
-│   └── GooglePage.ts        # Google page object
+│   └── HomePage.ts          # Homepage page object
 ├── features/                # Gherkin feature files
-│   └── google.feature       # Example feature file
+│   └── homepage.feature     # Example feature file
 ├── step-definitions/        # Step definition files
-│   └── google.steps.ts      # Example step definitions
+│   └── homepage.steps.ts    # Example step definitions
 ├── playwright.config.ts     # Playwright configuration
 ├── package.json            # Dependencies and scripts
 └── README.md               # This file
@@ -37,15 +37,24 @@ A comprehensive test automation framework built with Playwright, featuring Page 
 
 3. **Set environment variables (optional):**
    ```bash
-   export BASE_URL=https://your-custom-url.com
+   # Preferred: use a .env file (loaded automatically)
+   cp .env .env.local  # customize if needed
+
+   # Or export variables in your shell
+   export ENV=staging  # or 'stg', 'prod', 'production'
+   export BASIC_AUTH_USERNAME=name
+   export BASIC_AUTH_PASSWORD='passt17#'
    ```
-   If not set, the framework defaults to `https://www.google.com`
+   If not set, the framework defaults to `staging` environment. Basic auth is applied automatically when credentials are provided.
 
 ## Configuration
 
 The framework is configured through `playwright.config.ts`:
 
-- **Base URL**: Uses `process.env.BASE_URL` or defaults to Google
+- **Base URL**: Uses `process.env.ENV` to determine the target environment
+  - `staging` or `stg` → `https://www.guidectstage.com/`
+  - `prod` or `production` → `https://www.sportsmansguide.com`
+  - Default → `https://www.guidectstage.com/`
 - **Browsers**: Supports Chrome, Firefox, and Safari
 - **Reporting**: HTML reports with screenshots and videos on failure
 - **Retries**: 2 retries in CI, 0 in local development
@@ -75,7 +84,7 @@ npm run test:report
 
 ```bash
 # Run Gherkin tests with Cucumber
-npx cucumber-js features/google.feature --require step-definitions/google.steps.ts
+npx cucumber-js features/homepage.feature --require step-definitions/homepage.steps.ts
 ```
 
 ## Writing Tests
@@ -108,11 +117,18 @@ Create test files in the `tests/` directory:
 
 ```typescript
 import { test, expect } from '@playwright/test';
-import { YourPage } from '../pages/YourPage';
+import { HomePage } from '../pages/HomePage';
+import { testContext, TestContext } from '../playwright.config';
 
-test('your test', async ({ page }) => {
-  const yourPage = new YourPage(page);
-  await yourPage.navigateToPage();
+test('your test', async ({ page, testContext }) => {
+  const homePage = new HomePage(page);
+  await homePage.navigateToHomepage();
+  
+  // Use test context to store and retrieve data
+  testContext.addData('testName', 'your-test');
+  const environment = testContext.getEnvironment();
+  console.log(`Testing in: ${environment}`);
+  
   // Your test logic here
 });
 ```
@@ -152,23 +168,70 @@ Then('I should see expected result', async function () {
 
 ## Environment Variables
 
-- `BASE_URL`: The base URL for your application (defaults to Google)
+- `ENV`: The environment to test against
+  - `staging` or `stg` → Tests against `https://www.guidectstage.com/`
+  - `prod` or `production` → Tests against `https://www.sportsmansguide.com`
+  - Default → `staging` environment
+- `BASIC_AUTH_USERNAME`: Username for HTTP Basic Auth (optional)
+- `BASIC_AUTH_PASSWORD`: Password for HTTP Basic Auth (optional)
+
+## Test Context Fixture
+
+The framework includes a custom `testContext` fixture that allows you to:
+
+- **Store test data**: Share data between test steps
+- **Track environment**: Get current environment information
+- **Measure duration**: Track test execution time
+- **Add custom data**: Store any key-value pairs
+
+### Usage Examples
+
+```typescript
+// In regular Playwright tests
+test('example test', async ({ page, testContext }) => {
+  // Add data to context
+  testContext.addData('userId', '12345');
+  testContext.addData('testResult', 'passed');
+  
+  // Retrieve data from context
+  const userId = testContext.getData('userId');
+  const environment = testContext.getEnvironment();
+  const duration = testContext.getTestDuration();
+  
+  console.log(`User ${userId} tested in ${environment} in ${duration}ms`);
+});
+
+// In Gherkin step definitions
+Given('I am on the page', async function () {
+  const { page, testContext } = this;
+  testContext.addData('scenario', 'navigation-test');
+  // Your implementation
+});
+```
+
+### Available Methods
+
+- `addData(key: string, value: any)` - Store data in context
+- `getData(key: string)` - Retrieve data from context
+- `getEnvironment()` - Get current environment (staging/prod)
+- `getTestDuration()` - Get test execution time in milliseconds
 
 ## Best Practices
 
 1. **Page Object Model**: Use page objects to encapsulate page interactions
 2. **Environment Variables**: Use environment variables for configuration
-3. **Meaningful Test Names**: Write descriptive test names and scenarios
-4. **Wait Strategies**: Use proper wait strategies for element interactions
-5. **Error Handling**: Implement proper error handling and retries
-6. **Reporting**: Leverage Playwright's built-in reporting features
+3. **Test Context**: Leverage the test context fixture for data sharing
+4. **Meaningful Test Names**: Write descriptive test names and scenarios
+5. **Wait Strategies**: Use proper wait strategies for element interactions
+6. **Error Handling**: Implement proper error handling and retries
+7. **Reporting**: Leverage Playwright's built-in reporting features
 
 ## Troubleshooting
 
 ### Common Issues
 
 1. **Browser Installation**: Run `npx playwright install` if browsers are missing
-2. **Environment Variables**: Ensure BASE_URL is set correctly
+2. **Environment Variables**: Ensure ENV is set correctly
 3. **Dependencies**: Run `npm install` to install all required packages
 
 ### Debug Mode

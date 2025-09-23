@@ -12,7 +12,7 @@ npm ci
 ```
 
 ## Environment configuration
-Environment is selected by `TEST_ENV` loaded from `.env` (via dotenv) or the process env.
+Environment is selected by `ENV` loaded from `.env` (via dotenv) or the process env.
 
 Supported environments and base URLs:
 - prod: https://www.sportsmansguide.com/
@@ -25,7 +25,7 @@ Optional basic auth (only used for `dev` and `stage`):
 
 Example `.env`:
 ```bash
-TEST_ENV=dev
+ENV=dev
 BASIC_AUTH_USERNAME=myuser
 BASIC_AUTH_PASSWORD=mypass
 ```
@@ -41,7 +41,7 @@ npm run test:headed
 ```
 - Target a specific environment for a single run (overrides `.env`):
 ```bash
-TEST_ENV=stage npm test
+ENV=stage npm test
 ```
 
 ## Project structure
@@ -71,7 +71,7 @@ The project includes a GitHub Actions workflow (`.github/workflows/ci.yml`) that
 Set these in your repository settings:
 
 **Repository Variables** (Settings > Secrets and variables > Actions > Variables):
-- `TEST_ENV`: target environment (prod/dev/stage, defaults to dev)
+- `ENV`: target environment (prod/dev/stage, defaults to staging)
 
 **Repository Secrets** (Settings > Secrets and variables > Actions > Secrets):
 - `BASIC_AUTH_USERNAME`: basic auth username for dev/stage (automatically available to workflow)

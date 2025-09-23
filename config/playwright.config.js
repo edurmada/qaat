@@ -1,8 +1,8 @@
 import { defineConfig, devices } from '@playwright/test';
 import 'dotenv/config';
 
-// Map TEST_ENV aliases to canonical keys
-const rawEnv = (process.env.TEST_ENV || 'prod').toLowerCase();
+// Map ENV aliases to canonical keys
+const rawEnv = (process.env.ENV || 'prod').toLowerCase();
 const env = rawEnv === 'stg' ? 'stage' : rawEnv;
 const ENV_TO_BASE_URL = {
   prod: 'https://www.sportsmansguide.com/',
@@ -28,6 +28,7 @@ const httpCredentials = ['dev', 'stage'].includes(env)
 
 export default defineConfig({
   testDir: '../tests',
+  reporter: [['html', { open: 'never' }]],
   use: {
     headless: true,
     baseURL: ENV_TO_BASE_URL[env] || ENV_TO_BASE_URL.dev,

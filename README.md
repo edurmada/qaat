@@ -1,6 +1,12 @@
+<<<<<<< HEAD
 # QAAT Cucumber (JavaScript)
 
 Minimal Cucumber test suite using Gherkin syntax, Playwright for automation, environment-based baseURL, and optional basic auth for dev/stage via `.env`.
+=======
+# QAAT Playwright (JavaScript)
+
+Minimal Playwright test suite using plain JavaScript, environment-based baseURL, and optional basic auth for dev/stage via `.env`.
+>>>>>>> origin/develop
 
 ## Requirements
 - Node.js 18+
@@ -47,6 +53,7 @@ ENV=stage npm test
 ## Project structure
 ```
 config/
+<<<<<<< HEAD
   playwright.config.js     # Playwright config (not used by Cucumber)
 features/
   homepage.feature         # Gherkin feature file
@@ -84,6 +91,27 @@ The project includes a GitHub Actions workflow (`.github/workflows/ci.yml`) that
 - Uses Playwright container with pre-installed browsers
 - Publishes Cucumber HTML reports to GitHub Pages
 - Uploads test artifacts
+=======
+  playwright.config.js     # env-based baseURL + optional httpCredentials
+locators/
+  home.locators.js         # homepage locators
+pages/
+  home.page.js             # HomePage POM; uses baseURL from config
+tests/
+  sportsmansguide.spec.js  # example test using the POM
+```
+
+## Example test intent
+- Navigate to the environment-specific baseURL
+- Verify homepage loads and `#site-header` is present
+
+## GitHub Actions CI/CD
+The project includes a GitHub Actions workflow (`.github/workflows/ci.yml`) that:
+- Runs tests on push/PR to any branch
+- Uses Playwright container with pre-installed browsers
+- Publishes test results to GitHub Pages
+- Uploads test artifacts (screenshots/videos)
+>>>>>>> origin/develop
 
 ### Required GitHub Settings
 Set these in your repository settings:
@@ -96,9 +124,17 @@ Set these in your repository settings:
 - `BASIC_AUTH_PASSWORD`: basic auth password for dev/stage (automatically available to workflow)
 
 ## Troubleshooting
+<<<<<<< HEAD
 - No tests found: ensure feature files are in `features/` directory.
+=======
+- No tests found: ensure tests live in `tests/` and the config `testDir` is `../tests`.
+>>>>>>> origin/develop
 - Headed run fails on CI: headed requires a desktop environment; prefer headless on CI.
 - Basic auth prompt appears on dev/stage: set `BASIC_AUTH_USERNAME` and `BASIC_AUTH_PASSWORD` in `.env` or GitHub secrets.
 
 ## License
+<<<<<<< HEAD
 ISC
+=======
+ISC
+>>>>>>> origin/develop

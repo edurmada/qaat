@@ -16,20 +16,36 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+<<<<<<< HEAD
   test:
+=======
+  tests:
+>>>>>>> origin/develop
     runs-on: ubuntu-latest
     container: mcr.microsoft.com/playwright:v1.55.1-jammy
 
     steps:
+<<<<<<< HEAD
       - name: Checkout
+=======
+      - name: Checkout repository
+>>>>>>> origin/develop
         uses: actions/checkout@v4
 
       - name: Install dependencies
         run: npm ci
 
+<<<<<<< HEAD
       - name: Set environment
         env:
           ENV: ${{ vars.ENV || 'dev' }}
+=======
+      # Browsers and system deps are preinstalled in the container image
+
+      - name: Set up environment
+        env:
+          ENV: ${{ vars.ENV || 'prod' }}
+>>>>>>> origin/develop
           BASIC_AUTH_USERNAME: ${{ secrets.BASIC_AUTH_USERNAME }}
           BASIC_AUTH_PASSWORD: ${{ secrets.BASIC_AUTH_PASSWORD }}
         run: |
@@ -40,6 +56,7 @@ jobs:
       - name: Run tests
         run: npm test
 
+<<<<<<< HEAD
       - name: Prepare Cucumber report for upload
         if: always()
         run: |
@@ -68,11 +85,34 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: test-artifacts
+=======
+      - name: Prepare HTML report for GitHub Pages
+        if: always()
+        run: |
+          # Ensure index exists to avoid empty publish
+          test -f playwright-report/index.html
+
+      - name: Upload HTML report as Pages artifact
+        if: always()
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: playwright-report
+
+      - name: Upload test-results (screenshots/videos)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results
+>>>>>>> origin/develop
           path: test-results
           if-no-files-found: warn
 
   deploy:
+<<<<<<< HEAD
     needs: test
+=======
+    needs: tests
+>>>>>>> origin/develop
     runs-on: ubuntu-latest
     environment:
       name: github-pages
@@ -80,4 +120,8 @@ jobs:
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
+<<<<<<< HEAD
         uses: actions/deploy-pages@v4
+=======
+        uses: actions/deploy-pages@v4
+>>>>>>> origin/develop

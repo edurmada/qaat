@@ -1,8 +1,8 @@
 import { defineConfig, devices } from '@playwright/test';
 import 'dotenv/config';
 
-// Map TEST_ENV aliases to canonical keys
-const rawEnv = (process.env.TEST_ENV || 'prod').toLowerCase();
+// Map ENV aliases to canonical keys
+const rawEnv = (process.env.ENV || 'prod').toLowerCase();
 const env = rawEnv === 'stg' ? 'stage' : rawEnv;
 const ENV_TO_BASE_URL = {
   prod: 'https://www.sportsmansguide.com/',
@@ -13,12 +13,12 @@ const ENV_TO_BASE_URL = {
 // Resolve basic auth credentials for environments that need them
 const credentialsByEnv = {
   dev: {
-    username: process.env.DEV_BASIC_AUTH_USER || process.env.BASIC_AUTH_USER,
-    password: process.env.DEV_BASIC_AUTH_PASS || process.env.BASIC_AUTH_PASS,
+    username: process.env.BASIC_AUTH_USERNAME,
+    password: process.env.BASIC_AUTH_PASSWORD,
   },
   stage: {
-    username: process.env.STAGE_BASIC_AUTH_USER || process.env.BASIC_AUTH_USER,
-    password: process.env.STAGE_BASIC_AUTH_PASS || process.env.BASIC_AUTH_PASS,
+    username: process.env.BASIC_AUTH_USERNAME,
+    password: process.env.BASIC_AUTH_PASSWORD,
   },
 };
 
@@ -28,6 +28,7 @@ const httpCredentials = ['dev', 'stage'].includes(env)
 
 export default defineConfig({
   testDir: '../tests',
+  reporter: [['html', { open: 'never' }]],
   use: {
     headless: true,
     baseURL: ENV_TO_BASE_URL[env] || ENV_TO_BASE_URL.dev,

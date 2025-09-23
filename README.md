@@ -20,15 +20,14 @@ Supported environments and base URLs:
 - stage (or stg): https://www.guidectstage.com/
 
 Optional basic auth (only used for `dev` and `stage`):
-- DEV_BASIC_AUTH_USER / DEV_BASIC_AUTH_PASS
-- STAGE_BASIC_AUTH_USER / STAGE_BASIC_AUTH_PASS
-- Fallbacks: BASIC_AUTH_USER / BASIC_AUTH_PASS
+- BASIC_AUTH_USERNAME
+- BASIC_AUTH_PASSWORD
 
 Example `.env`:
 ```bash
 TEST_ENV=dev
-DEV_BASIC_AUTH_USER=myuser
-DEV_BASIC_AUTH_PASS=mypass
+BASIC_AUTH_USERNAME=myuser
+BASIC_AUTH_PASSWORD=mypass
 ```
 
 ## Scripts
@@ -64,7 +63,7 @@ tests/
 ## Troubleshooting
 - No tests found: ensure tests live in `tests/` and the config `testDir` is `../tests`.
 - Headed run fails on CI: headed requires a desktop environment; prefer headless on CI.
-- Basic auth prompt appears on dev/stage: set the appropriate `*_BASIC_AUTH_*` variables in `.env`.
+- Basic auth prompt appears on dev/stage: set `BASIC_AUTH_USERNAME` and `BASIC_AUTH_PASSWORD` in `.env`.
 
 ## License
 ISC

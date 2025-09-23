@@ -13,12 +13,12 @@ const ENV_TO_BASE_URL = {
 // Resolve basic auth credentials for environments that need them
 const credentialsByEnv = {
   dev: {
-    username: process.env.DEV_BASIC_AUTH_USER || process.env.BASIC_AUTH_USER,
-    password: process.env.DEV_BASIC_AUTH_PASS || process.env.BASIC_AUTH_PASS,
+    username: process.env.BASIC_AUTH_USERNAME,
+    password: process.env.BASIC_AUTH_PASSWORD,
   },
   stage: {
-    username: process.env.STAGE_BASIC_AUTH_USER || process.env.BASIC_AUTH_USER,
-    password: process.env.STAGE_BASIC_AUTH_PASS || process.env.BASIC_AUTH_PASS,
+    username: process.env.BASIC_AUTH_USERNAME,
+    password: process.env.BASIC_AUTH_PASSWORD,
   },
 };
 

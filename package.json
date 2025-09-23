@@ -14,7 +14,7 @@
   "author": "",
   "license": "MIT",
   "devDependencies": {
-    "@playwright/test": "^1.40.0",
+    "@playwright/test": "^1.47.0",
     "@cucumber/cucumber": "^10.0.0",
     "@types/node": "^20.0.0",
     "typescript": "^5.0.0",

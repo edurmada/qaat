@@ -18,7 +18,7 @@ concurrency:
 jobs:
   tests:
     runs-on: ubuntu-latest
-    container: mcr.microsoft.com/playwright:v1.55.0-jammy
+    container: mcr.microsoft.com/playwright:v1.55.1-jammy
 
     steps:
       - name: Checkout repository
@@ -31,9 +31,13 @@ jobs:
 
       - name: Set up environment
         env:
-          TEST_ENV: ${{ vars.TEST_ENV || 'dev' }}
+          ENV: ${{ vars.ENV || 'staging' }}
+          BASIC_AUTH_USERNAME: ${{ secrets.BASIC_AUTH_USERNAME }}
+          BASIC_AUTH_PASSWORD: ${{ secrets.BASIC_AUTH_PASSWORD }}
         run: |
-          echo "TEST_ENV=${TEST_ENV}" >> $GITHUB_ENV
+          echo "ENV=${ENV}" >> $GITHUB_ENV
+          if [ -n "${BASIC_AUTH_USERNAME}" ]; then echo "BASIC_AUTH_USERNAME=${BASIC_AUTH_USERNAME}" >> $GITHUB_ENV; fi
+          if [ -n "${BASIC_AUTH_PASSWORD}" ]; then echo "BASIC_AUTH_PASSWORD=${BASIC_AUTH_PASSWORD}" >> $GITHUB_ENV; fi
 
       - name: Run tests
         run: npm test

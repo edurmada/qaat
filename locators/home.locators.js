@@ -13,8 +13,12 @@ export class HomeLocators {
     this._viewCartButton = page.locator('#mini-cart-actions a[href="/cart/viewcart"]');
     this._checkoutCartButton = page.locator('#mini-cart-actions a[href="/authenticate/checkoutlogin"]');
 
-    // CART
-    this._cartSummary = page.locator('div.cart-summary');
+    this._giftCardOptions = page.locator('md-select-menu md-option');
+    this._giftCardTypeOptions = page.locator('md-content md-option');
+    
+    this._radioMailToSomeoneElse = page.locator('#radio_26');
+    this._radioMailToMe = page.locator('#radio_27');
+    this._saveDetailsButton = page.locator('md-dialog-actions button');
   }
 
   get siteHeader() {
@@ -61,7 +65,23 @@ export class HomeLocators {
     return this._checkoutCartButton;
   }
 
-  get cartSummary() {
-    return this._cartSummary;
+  get giftCardOptions() {
+    return this._giftCardOptions;
+  }
+
+  get giftCardTypeOptions() {
+    return this._giftCardTypeOptions;
+  }
+
+  get radioMailToSomeoneElse() {
+  return this._radioMailToSomeoneElse;
+  }
+
+  get radioMailToMe() {
+    return this._radioMailToMe;
+  }
+
+  get saveDetailsButton() {
+    return this._saveDetailsButton;
   }
 }

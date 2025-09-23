@@ -10,17 +10,17 @@ Feature: Homepage Navigation
 
   Scenario: Search for a product using the search bar
     Given I navigate to the homepage
-    When I send a queryTerm to search
+    When I search for a product
     Then Search results are listed on PLP
   
-  Scenario: Add product to 
+  Scenario: Add product to cart 
     Given I navigate to the homepage
-    When I send a queryTerm to search
+    When I search for a product
     And I add product to cart
     Then cart page is shown
 
   Scenario: Add gitCard to cart
     Given I navigate to the homepage
-    When I send a queryTerm to search
+    When I search for a gitCard
     And I add gitCard to cart
     Then cart page is shown

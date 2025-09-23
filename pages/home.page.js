@@ -58,7 +58,7 @@ export class HomePage {
   }
 
   async selectFirstGiftCardOption() {
-    await this._giftCardOptions.first().waitFor({ state: 'visible' });
+    await this.locators.giftCardOptions.first().waitFor({ state: 'visible' });
 
     const optionsCount = await this.locators.giftCardOptions.count();
     if (optionsCount > 1) {

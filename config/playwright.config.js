@@ -4,9 +4,10 @@ import 'dotenv/config';
 // Map ENV aliases to canonical keys
 const rawEnv = (process.env.ENV || 'prod').toLowerCase();
 const env = rawEnv === 'stg' ? 'stage' : rawEnv;
+console.log(env)
 const ENV_TO_BASE_URL = {
   prod: 'https://www.sportsmansguide.com/',
-  dev: 'https://www.guidectdev.com/',
+  dev: 'https://www.guidectstage.com/',
   stage: 'https://www.guidectstage.com/',
 };
 

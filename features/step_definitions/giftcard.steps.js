@@ -48,6 +48,11 @@ Then('the giftcard type field is visible', async function() {
     await pomPage.pdplocators.giftCardTypeField.waitFor({ state: 'visible', timeout: 20000 });
 });
 
+Then('the giftcard type field is not visible', async function() {
+    // This step should fail if the field is visible
+    await pomPage.pdplocators.giftCardTypeField.waitFor({ state: 'hidden', timeout: 500 });
+});
+
 Then('the quantity field is visible', async function() {
     await pomPage.pdplocators.quantityField.waitFor({ state: 'visible', timeout: 20000 });
 });

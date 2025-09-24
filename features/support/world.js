@@ -27,7 +27,11 @@ class CustomWorld {
     this.browser = await chromium.launch({ headless });
     
     // Set up basic auth if credentials are provided
-    const contextOptions = {};
+    const contextOptions = {
+      defaultTimeout: 20000,
+      actionTimeout: 20000,
+      navigationTimeout: 20000,
+    };
     if (process.env.BASIC_AUTH_USERNAME && process.env.BASIC_AUTH_PASSWORD) {
       contextOptions.httpCredentials = {
         username: process.env.BASIC_AUTH_USERNAME,
@@ -37,6 +41,12 @@ class CustomWorld {
     
     const context = await this.browser.newContext(contextOptions);
     this.page = await context.newPage();
+    
+    // Set default timeout to 20 seconds
+    this.page.setDefaultTimeout(20000);
+    
+    // Maximize browser window
+    await this.page.setViewportSize({ width: 1920, height: 1080 });
   }
 
   async cleanup() {

@@ -28,7 +28,7 @@ When('I search for {string}', async function(searchTerm) {
   await searchBox.press('Enter');
 });
 
-Then('I should be on the product detail page', async function() {
+Then('I get to the product detail page', async function() {
   productDetailPage = new ProductDetailPage(this.page);
   await productDetailPage.verifyOnProductDetailPage();
 });
@@ -36,4 +36,30 @@ Then('I should be on the product detail page', async function() {
 Then('the product detail page displays correctly', async function() {
     productDetailPage = new ProductDetailPage(this.page);
     await productDetailPage.hasProductDetailPageElements();
+});
+
+Then('the product detail add to cart button is visible', async function() {
+    productDetailPage = new ProductDetailPage(this.page);
+    await productDetailPage.locators.addToCartButton.waitFor({ state: 'visible', timeout: 20000 });
+});
+
+
+Then('the giftcard amount field is visible', async function() {
+    productDetailPage = new ProductDetailPage(this.page);
+    await productDetailPage.locators.giftCardAmountField.waitFor({ state: 'visible', timeout: 20000 });
+});
+
+Then('the giftcard type field is visible', async function() {
+    productDetailPage = new ProductDetailPage(this.page);
+    await productDetailPage.locators.giftCardTypeField.waitFor({ state: 'visible', timeout: 20000 });
+});
+
+Then('the quantity field is visible', async function() {
+    productDetailPage = new ProductDetailPage(this.page);
+    await productDetailPage.locators.quantityField.waitFor({ state: 'visible', timeout: 20000 });
+});
+
+Then('the product detail image is visible', async function() {
+    productDetailPage = new ProductDetailPage(this.page);
+    await productDetailPage.locators.productDetailImage.waitFor({ state: 'visible', timeout: 20000 });
 });

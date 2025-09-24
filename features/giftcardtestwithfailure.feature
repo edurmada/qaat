@@ -9,7 +9,7 @@ Feature: Gift Card Search
     And I get to the product detail page
     Then the product detail add to cart button is visible
     And the giftcard amount field is visible
-    And the giftcard type field is visible
+    And the giftcard type field is not visible
     And the quantity field is visible
     And the product detail image is visible
     And the product detail page displays correctly

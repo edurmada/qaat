@@ -13,10 +13,10 @@ class CustomWorld {
   }
 
   getBaseURL() {
-    const env = (process.env.ENV || process.env.TEST_ENV || 'dev').toLowerCase();
+    const env = (process.env.ENV || process.env.TEST_ENV || 'stg').toLowerCase();
     const ENV_TO_BASE_URL = {
       prod: 'https://www.sportsmansguide.com/',
-      dev: 'https://www.guidectdev.com/',
+      dev: 'https://www.guidectstage.com/',
       stage: 'https://www.guidectstage.com/',
     };
     return ENV_TO_BASE_URL[env] || ENV_TO_BASE_URL.dev;

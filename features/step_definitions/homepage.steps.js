@@ -42,6 +42,7 @@ When('I add product to cart', async function () {
 
 Then('cart page is shown', async function () {
   await expect(homePage.locators.cartSummary).toBeVisible();
+  await new Promise(resolve => setTimeout(resolve, 2000));
 })
 
 When('I search for a gitCard', async function () {

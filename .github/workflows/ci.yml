@@ -56,7 +56,7 @@ jobs:
         if: always()
         uses: actions/upload-pages-artifact@v3
         with:
-          path: reports/index.html
+          path: reports
 
   deploy:
     needs: test

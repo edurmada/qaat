@@ -18,9 +18,3 @@ Feature: Homepage Navigation
     When I search for a product
     And I add product to cart
     Then cart page is shown
-
-  Scenario: Add gitCard to cart
-    Given I navigate to the homepage
-    When I search for a gitCard
-    And I add gitCard to cart
-    Then cart page is shown

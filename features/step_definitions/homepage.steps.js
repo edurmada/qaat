@@ -1,13 +1,13 @@
 import { Given, When, Then } from '@cucumber/cucumber';
 import { expect } from '@playwright/test';
-import { HomePage } from '../../pages/home.page.js'
+import { CartPage } from '../../pages/cart.page.js'
 
 let homePage;
 let productSearchTerm = 'U.S. Military Surplus Waterproof M2A1 .50 Caliber Ammo Can, Used';
 
 Given('I navigate to the homepage', async function() {
   const { page, baseURL } = this;
-  homePage = new HomePage(page, baseURL);
+  homePage = new CartPage(page, baseURL);
   await homePage.goto();
 });
 

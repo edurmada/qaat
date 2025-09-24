@@ -1,6 +1,6 @@
 import { Given, When, Then } from '@cucumber/cucumber';
 import { expect } from '@playwright/test';
-import { HomePage } from '../../pages/home.page.js';
+import { CartPage } from '../../pages/cart.page.js';
 import { ProductDetailPage } from '../../pages/productdetail.page.js';
 
 let homePage;
@@ -9,7 +9,7 @@ let productDetailPage;
 Given('I am on the homepage', async function() {
   const { page, baseURL } = this;
   const miniAccount = page.locator('#mini-account');
-  homePage = new HomePage(page, baseURL);
+  homePage = new CartPage(page, baseURL);
   await homePage.goto();
   expect(miniAccount).toBeVisible();
 });

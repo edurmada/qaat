@@ -1,4 +1,5 @@
 import { HomePage } from './home.page.js';
+import { CartLocators } from '../locators/cart.locators.js';
 
 export class CartPage extends HomePage {
   constructor(page, baseURL) {

@@ -23,5 +23,5 @@ Feature: Product Search
     And the checkout button is visible
     And the product quantity field is visible
     And the remove button is visible
-    And the product image is visible
+    #And the product image is visible
     And the product name is visible

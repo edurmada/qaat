@@ -30,7 +30,8 @@ When('I select the first cart result', async function () {
 });
 
 Then('I get to the product card detail page', async function () {
-    await expect(cartPage.locators.cartSummary).toBeVisible();
+    await expect(cartPage.locators.addToCartButton).toBeVisible();
+    console.log('Product card detail page is shown');
 });
 
 When('the add to cart button is visible', async function () {
@@ -63,8 +64,10 @@ When('the product name is visible', async function () {
 
 When('I add the product to cart', async function () {
     await cartPage.locators.addToCartButton.click();
+    console.log('Product added to cart');
 })
 
 When('I open the cart', async function () {
     await cartPage.locators.viewCartButton.click();
+    console.log('Cart oppened');
 })

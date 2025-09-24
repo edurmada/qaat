@@ -38,7 +38,7 @@ jobs:
       - name: Run tests on DEV
         run: npm test || echo "Tests completed with failures"
 
-      - name: Prepare DEV Cucumber report for upload
+      - name: Prepare DEV Cucumber report
         if: always()
         run: |
           mkdir -p reports/dev
@@ -63,12 +63,12 @@ jobs:
           echo "Final DEV report contents:"
           ls -la reports/dev/
 
-      - name: Upload DEV Cucumber report to Pages
+      - name: Upload DEV report artifact
         if: always()
-        uses: actions/upload-pages-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
-          path: reports/dev
           name: dev-report
+          path: reports/dev
 
   test-stg:
     runs-on: ubuntu-latest
@@ -94,7 +94,7 @@ jobs:
       - name: Run tests on STG
         run: npm test || echo "Tests completed with failures"
 
-      - name: Prepare STG Cucumber report for upload
+      - name: Prepare STG Cucumber report
         if: always()
         run: |
           mkdir -p reports/stg
@@ -119,12 +119,12 @@ jobs:
           echo "Final STG report contents:"
           ls -la reports/stg/
 
-      - name: Upload STG Cucumber report to Pages
+      - name: Upload STG report artifact
         if: always()
-        uses: actions/upload-pages-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
-          path: reports/stg
           name: stg-report
+          path: reports/stg
 
   deploy:
     needs: [test-dev, test-stg]
@@ -134,6 +134,52 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+        with:
+          pattern: '*-report'
+          path: .
+
+      - name: Prepare combined report
+        run: |
+          mkdir -p reports
+          
+          # Create main index page
+          echo "<!DOCTYPE html><html><head><title>QA Test Reports</title><style>body{font-family:Arial,sans-serif;margin:40px;}ul{list-style:none;padding:0;}li{margin:10px 0;}a{text-decoration:none;color:#0366d6;font-weight:bold;}a:hover{text-decoration:underline;}</style></head><body>" > reports/index.html
+          echo "<h1>QA Test Reports</h1>" >> reports/index.html
+          echo "<p>Select environment to view test results:</p>" >> reports/index.html
+          echo "<ul>" >> reports/index.html
+          
+          # Check for DEV report
+          if [ -d "dev-report" ] && [ -f "dev-report/index.html" ]; then
+            echo "<li><a href='dev/index.html'>🔧 DEV Environment</a></li>" >> reports/index.html
+            mkdir -p reports/dev
+            cp dev-report/index.html reports/dev/
+          else
+            echo "<li>🔧 DEV Environment - No report available</li>" >> reports/index.html
+          fi
+          
+          # Check for STG report
+          if [ -d "stg-report" ] && [ -f "stg-report/index.html" ]; then
+            echo "<li><a href='stg/index.html'>🚀 STG Environment</a></li>" >> reports/index.html
+            mkdir -p reports/stg
+            cp stg-report/index.html reports/stg/
+          else
+            echo "<li>🚀 STG Environment - No report available</li>" >> reports/index.html
+          fi
+          
+          echo "</ul>" >> reports/index.html
+          echo "<p><small>Generated on $(date)</small></p>" >> reports/index.html
+          echo "</body></html>" >> reports/index.html
+          
+          echo "Final report structure:"
+          find reports -type f -name "*.html" | head -10
+
+      - name: Upload to GitHub Pages
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: reports
+
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4

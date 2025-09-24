@@ -8,13 +8,23 @@ let productDetailPage;
 
 Given('I am on the homepage', async function() {
   const { page, baseURL } = this;
+  const miniAccount = page.locator('#mini-account');
   homePage = new HomePage(page, baseURL);
   await homePage.goto();
+  expect(miniAccount).toBeVisible();
 });
 
 When('I search for {string}', async function(searchTerm) {
   const searchBox = this.page.locator('#k');
+  await new Promise(resolve => setTimeout(resolve, 1000));
+  await searchBox.click();
+  // Wait for the opacity style to change to blue
+  await this.page.waitForFunction(
+    "() => document.getElementById('search-label').style.opacity === 0.5"
+  );
   await searchBox.fill(searchTerm);
+  // Wait a moment before pressing Enter
+  await new Promise(resolve => setTimeout(resolve, 1000));
   await searchBox.press('Enter');
 });
 

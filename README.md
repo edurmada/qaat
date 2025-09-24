@@ -1,6 +1,6 @@
-# QAAT Playwright (JavaScript)
+# QAAT Cucumber (JavaScript)
 
-Minimal Playwright test suite using plain JavaScript, environment-based baseURL, and optional basic auth for dev/stage via `.env`.
+Minimal Cucumber test suite using Gherkin syntax, Playwright for automation, environment-based baseURL, and optional basic auth for dev/stage via `.env`.
 
 ## Requirements
 - Node.js 18+
@@ -47,25 +47,43 @@ ENV=stage npm test
 ## Project structure
 ```
 config/
-  playwright.config.js     # env-based baseURL + optional httpCredentials
+  playwright.config.js     # Playwright config (not used by Cucumber)
+features/
+  homepage.feature         # Gherkin feature file
+  step_definitions/
+    homepage.steps.js      # Step implementations
+  support/
+    world.js               # Custom world with Playwright setup
+    hooks.js               # Before/After hooks
 locators/
-  home.locators.js         # homepage locators
+  home.locators.js         # Page object locators
 pages/
-  home.page.js             # HomePage POM; uses baseURL from config
-tests/
-  sportsmansguide.spec.js  # example test using the POM
+  home.page.js             # Page object model
+cucumber.config.js         # Cucumber configuration
 ```
 
-## Example test intent
-- Navigate to the environment-specific baseURL
-- Verify homepage loads and `#site-header` is present
+## Example test
+The test navigates to the environment-specific baseURL and verifies the `#site-header` element is present.
+
+**Feature file** (`features/homepage.feature`):
+```gherkin
+Feature: Homepage Navigation
+  As a user
+  I want to navigate to the homepage
+  So that I can access the site header
+
+  Scenario: Verify homepage loads with site header
+    Given I navigate to the homepage
+    When the page loads
+    Then I should see the site header
+```
 
 ## GitHub Actions CI/CD
 The project includes a GitHub Actions workflow (`.github/workflows/ci.yml`) that:
-- Runs tests on push/PR to any branch
+- Runs Cucumber tests on push/PR to any branch
 - Uses Playwright container with pre-installed browsers
-- Publishes test results to GitHub Pages
-- Uploads test artifacts (screenshots/videos)
+- Publishes Cucumber HTML reports to GitHub Pages
+- Uploads test artifacts
 
 ### Required GitHub Settings
 Set these in your repository settings:
@@ -78,7 +96,7 @@ Set these in your repository settings:
 - `BASIC_AUTH_PASSWORD`: basic auth password for dev/stage (automatically available to workflow)
 
 ## Troubleshooting
-- No tests found: ensure tests live in `tests/` and the config `testDir` is `../tests`.
+- No tests found: ensure feature files are in `features/` directory.
 - Headed run fails on CI: headed requires a desktop environment; prefer headless on CI.
 - Basic auth prompt appears on dev/stage: set `BASIC_AUTH_USERNAME` and `BASIC_AUTH_PASSWORD` in `.env` or GitHub secrets.
 

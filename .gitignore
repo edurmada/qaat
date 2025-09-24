@@ -8,6 +8,7 @@ node_modules/
 test-results/
 cucumber-report
 playwright-report/
+reports
 
 # Temporary files
 *.log

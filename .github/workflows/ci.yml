@@ -27,7 +27,7 @@ jobs:
 
       - name: Set environment
         env:
-          ENV: ${{ vars.ENV || 'dev' }}
+          ENV: 'stg'
           BASIC_AUTH_USERNAME: ${{ secrets.BASIC_AUTH_USERNAME }}
           BASIC_AUTH_PASSWORD: ${{ secrets.BASIC_AUTH_PASSWORD }}
         run: |
@@ -41,9 +41,6 @@ jobs:
       - name: Prepare Cucumber report for upload
         if: always()
         run: |
-          # Create cucumber-report directory for GitHub Pages
-          rm -f cucumber-report  # Remove file if it exists
-          mkdir -p cucumber-report
           
           if [ -f "cucumber-report.html" ]; then
             echo "Moving cucumber-report.html to directory"
@@ -51,27 +48,20 @@ jobs:
           elif [ -d "cucumber-report" ] && [ -f "cucumber-report/index.html" ]; then
             echo "Cucumber report directory with index.html already exists"
           else
-            echo "Creating empty Cucumber report"
-            echo "<html><body><h1>No test results available</h1><p>Tests may have failed or no report was generated.</p></body></html>" > cucumber-report/index.html
+            echo "No cucumber-report directory or file found, creating fallback report"
+            echo "<html><body><h1>No test results available</h1><p>Tests may have failed or no report was generated.</p><p>Check the test logs for more details.</p></body></html>" > reports/index.html
           fi
 
       - name: Upload Cucumber report to Pages
         if: always()
         uses: actions/upload-pages-artifact@v3
         with:
-          path: cucumber-report
-
-      - name: Upload test artifacts
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: test-artifacts
-          path: test-results
-          if-no-files-found: warn
+          path: reports
 
   deploy:
     needs: test
     runs-on: ubuntu-latest
+    if: always()
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}

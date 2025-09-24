@@ -29,10 +29,12 @@ const httpCredentials = ['dev', 'stage'].includes(env)
 export default defineConfig({
   testDir: '../tests',
   reporter: [['html', { open: 'never' }]],
+  timeout: 60000, // 60 seconds global timeout
   use: {
     headless: true,
     baseURL: ENV_TO_BASE_URL[env] || ENV_TO_BASE_URL.dev,
     httpCredentials,
+    actionTimeout: 30000, // 30 seconds for individual actions
   },
 });
 

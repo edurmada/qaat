@@ -13,7 +13,7 @@ Given('I navigate to the homepage', async function() {
 When('the page loads', async function() {
   // Page is already loaded from the previous step
   // This step is for clarity and potential future enhancements
-  console.log('The page loads');
+  await expect(homePage.locators.siteHeader).toBeVisible();
 });
 
 Then('I should see the site header', async function() {

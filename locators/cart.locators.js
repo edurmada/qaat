@@ -12,6 +12,9 @@ export class CartLocators extends HomeLocators {
     this._updateButton = page.locator('button:has-text("Update")');
     this._removeButton = page.locator('button:has-text("Remove")');
     this._moveToWishlistButton = page.locator('button:has-text("Move to Wish List")');
+    this._productPicture = page.locator('div.cart-tile-img-container img');
+    this._quantityField = page.locator('div.quantity-container input');
+    this._productName = page.locator('div.cart-tile-info-container h2');
   }
 
   get cartSummary() {
@@ -44,5 +47,17 @@ export class CartLocators extends HomeLocators {
 
   get moveToWishlistButton() {
     return this._moveToWishlistButton;
+  }
+
+  get productPicture() {
+    return this._productPicture;
+  }
+
+  get quantityField() {
+    return this._quantityField;
+  }
+
+  get productName() {
+    return this._productName;
   }
 }
